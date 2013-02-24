@@ -1,0 +1,57 @@
+<template name="chronos">
+  <div class="row">
+    {{loginButtons}}
+  </div>
+  {{#if userLoggedIn}}
+    {{#unless showCreateEvent}}
+      {{#unless showInvitePeople}}
+        <div class="row">
+          <button class="btn btn-primary create-event">Create an Event</button>
+        </div>
+      {{/unless}}
+    {{/unless}}
+  {{/if}}
+
+  {{#if showCreateEvent}}
+    {{> modalCreateEvent }}
+  {{/if}}
+
+  {{#if showInvitePeople}}
+    {{> modalInvitePeople }}
+  {{/if}}
+
+</template>
+
+<template name="modalCreateEvent">
+  <div class='row'>
+    <label>Name</label>
+    <input class='event-name' />
+  </div>
+  <div class='row'>
+    <label>Minimum People</label>
+    <input class='event-minimum-people' />
+  </div>
+  <div class='row'>
+    <label>Maximum People</label>
+    <input class='event-maximum-people' />
+  </div>
+  <div class='row'>
+    <label>Date</label>
+    <input class='event-date' />
+  </div>
+  <div class='row'>
+    <button class="create-event">Create the Event</button>
+  </div>
+</template>
+
+<template name='modalInvitePeople'>
+  <div class='row'>
+    <h3>{{currentEventTitle}}</h3>
+    <p>Invite some people in now...</p>
+    <textarea rows='5' cols='40' name='invitees' class='invitees'></textarea>
+  </div>
+  <div class='row'>
+    <button class='send-invites'>Send Invites</button>
+  </div>
+</div>
+</template>
