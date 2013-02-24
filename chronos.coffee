@@ -14,6 +14,9 @@ if Meteor.isClient
   Template.chronos.showInvitePeople = =>
     Session.get("showInvitePeople")
 
+  Template.chronos.invitesSent = =>
+    Session.get('invitesSent')
+
   Template.modalCreateEvent.events =
     'click .create-event': (event, template) =>
       title = template.find('.event-name').value
@@ -43,6 +46,9 @@ if Meteor.isClient
       invitees = _.compact(template.find('.invitees').value.split("\n"))
       eventId = Session.get("currentParty")
       Meteor.call("invitePeople", eventId, invitees)
+
+      Session.set('showInvitePeople', false)
+      Session.set('invitesSent', true)
 
 if Meteor.isServer
   Meteor.startup = =>

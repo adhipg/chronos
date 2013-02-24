@@ -16,6 +16,7 @@ Meteor.methods
     Events.update(eventId, {$set: { 'invitees': invitees }})
 
     if Meteor.isServer
+      return # FIXME Disable emails for now.
       event = Events.findOne(eventId)
       user = Meteor.users.findOne(@userId)
       from = user.emails?[0].address
