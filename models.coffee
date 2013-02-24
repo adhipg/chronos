@@ -7,11 +7,20 @@ Events.allow
   remove: (userId, event) =>
 
 Meteor.methods
-  createEvent: (options) =>
+  createEvent: (options) ->
     Events.insert
       owner: @userId
       title: options.title
 
-  invitePeople: (eventId, invitees) =>
+  invitePeople: (eventId, invitees) ->
     Events.update(eventId, {$set: { 'invitees': invitees }})
-    # Send email from here.
+
+    event = Events.findOne(eventId)
+    user = Meteor.users.findOne(@userId)
+    from = user.emails?[0].address
+    _.each invitees, (invitee) =>
+      Email.send
+        from: 'robot@chronos.meteor.com'
+        to: invitee
+        subject: '[Chronos] Invitation!'
+        text: "You've been invited to '#{event.title}' by '#{from}'"
