@@ -15,12 +15,13 @@ Meteor.methods
   invitePeople: (eventId, invitees) ->
     Events.update(eventId, {$set: { 'invitees': invitees }})
 
-    event = Events.findOne(eventId)
-    user = Meteor.users.findOne(@userId)
-    from = user.emails?[0].address
-    _.each invitees, (invitee) =>
-      Email.send
-        from: 'robot@chronos.meteor.com'
-        to: invitee
-        subject: '[Chronos] Invitation!'
-        text: "You've been invited to '#{event.title}' by '#{from}'"
+    if Meteor.isServer
+      event = Events.findOne(eventId)
+      user = Meteor.users.findOne(@userId)
+      from = user.emails?[0].address
+      _.each invitees, (invitee) =>
+        Email.send
+          from: 'robot@chronos.meteor.com'
+          to: invitee
+          subject: '[Chronos] Invitation!'
+          text: "You've been invited to '#{event.title}' by '#{from}'"
